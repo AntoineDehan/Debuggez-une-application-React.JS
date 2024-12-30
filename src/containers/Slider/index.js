@@ -24,8 +24,6 @@ const Slider = () => {
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => {
         console.log("Event object:", event);
-        console.log("Event TITLE", event?.title);
-        console.log("Event DATE:", event?.date);
         return (
           <>
             <div

@@ -32,8 +32,10 @@ export const DataProvider = ({ children }) => {
   });
 
   const last = data?.events[data.events.length - 1];
-  console.log("ici c'est last");
-  console.log(last);
+  console.log("DATA :", data);
+  console.log("DATA Events:", data?.events);
+  console.log("DATA Events id:", data?.events.id);
+  // console.log(data?.events.date);
 
   return (
     <DataContext.Provider
