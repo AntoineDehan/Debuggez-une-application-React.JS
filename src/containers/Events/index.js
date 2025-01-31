@@ -14,26 +14,24 @@ const EventList = () => {
   const [type, setType] = useState();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredEvents = (
-    (!type
-      ? data?.events
-      : data?.events.filter((event) => event.type === type)) || []
-  ) // On vérifie que le type recupéré correspond a un type d'évenement stocké dans le json
-    .filter((event, index) => {
-      if (
-        (currentPage - 1) * PER_PAGE <= index &&
-        PER_PAGE * currentPage > index
-      ) {
-        return true;
-      }
+  const filteredEvents = !type
+    ? data?.events
+    : data?.events?.filter((event) => event.type === type);
 
-      return false;
-    });
+  const startIndex = (currentPage - 1) * PER_PAGE;
+  const endIndex = Math.min(startIndex + PER_PAGE, filteredEvents?.length || 0);
+  const eventsOnCurrentPage = filteredEvents?.slice(startIndex, endIndex);
+
   const changeType = (evtType) => {
     setCurrentPage(1);
     setType(evtType);
   };
-  const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
+
+  let pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
+
+  if ((filteredEvents?.length || 0) % PER_PAGE === 0) {
+    pageNumber -= 1;
+  }
   const typeList = new Set(data?.events.map((event) => event.type));
   return (
     <>
@@ -48,7 +46,7 @@ const EventList = () => {
             onChange={(value) => (value ? changeType(value) : changeType(null))}
           />
           <div id="events" className="ListContainer">
-            {filteredEvents.map((event) => (
+            {eventsOnCurrentPage.map((event) => (
               <Modal key={event.id} Content={<ModalEvent event={event} />}>
                 {({ setIsOpened }) => (
                   <EventCard
