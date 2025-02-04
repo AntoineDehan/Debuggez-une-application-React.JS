@@ -33,6 +33,7 @@ const EventList = () => {
     pageNumber -= 1;
   }
   const typeList = new Set(data?.events.map((event) => event.type));
+
   return (
     <>
       {error && <div>An error occured</div>}
@@ -46,7 +47,7 @@ const EventList = () => {
             onChange={(value) => (value ? changeType(value) : changeType(null))}
           />
           <div id="events" className="ListContainer">
-            {eventsOnCurrentPage.map((event) => (
+            {eventsOnCurrentPage?.map((event) => (
               <Modal key={event.id} Content={<ModalEvent event={event} />}>
                 {({ setIsOpened }) => (
                   <EventCard
